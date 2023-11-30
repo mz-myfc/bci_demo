@@ -82,6 +82,7 @@ extension BluetoothExtension on Ble {
         _disconnect();
         Pop.helper.dismiss();
         Pop.helper.toast(msg: 'Bluetooth is disconnected');
+        Helper.h.init();
         break;
     }
   }
@@ -160,6 +161,7 @@ extension BluetoothExtension on Ble {
         case DeviceConnectionState.connected:
           break;
         case DeviceConnectionState.disconnected:
+          Helper.h.init();
           await _disconnect();
           Pop.helper.dismiss();
           break;
@@ -168,7 +170,7 @@ extension BluetoothExtension on Ble {
         case DeviceConnectionState.disconnecting:
           break;
       }
-    });
+    }); 
   }
 
   void _readAndWrite(DiscoveredDevice device) {

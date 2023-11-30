@@ -41,6 +41,7 @@ class Helper extends ChangeNotifier {
     model = Cmd.BCI;
     deviceName = '--';
     deviceId = '--';
+    notify();
   }
 
   //Bluetooth data analysis
