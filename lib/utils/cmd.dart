@@ -12,7 +12,7 @@ class Cmd {
   static const String BCI          = '00:00:00'; //BCI: Package Length: 5 bytes
   static const String BCI_BATTERY  = '00:01:00'; //BCI: Package Length: 6 bytes - BATTERY
   static const String BCI_RR       = '00:02:00'; //BCI: Package Length: 7 bytes - RR
-  static const String BCI_AF       = '00:03:00'; //BCI: Package Length: 5 bytes - AF
+  static const String BCI_AF       = '00:03:00'; //BCI: Package Length: 8 bytes - AF
   static const String BCI_RR_AF    = '00:04:00'; //BCI: Package Length: 9 bytes - RR + AF
-  static const String BCI_BM100A_I = '00:05:00'; //BCI: Package Length: 7 bytes - BM1000A-I
+  static const String BCI_BM100A_I = '00:05:00'; //BCI: Package Length: 7 bytes - BM1000A-I 
 }
