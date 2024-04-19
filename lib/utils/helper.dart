@@ -16,12 +16,13 @@ class Helper extends ChangeNotifier {
   Helper._();
 
   List<int> bufferArray = [];
-  int spo2 = 0;
-  int pr = 0;
-  double pi = 0.0;
-  int si = 0;
-  int rr = 0;
-  int af = 0;
+  int spo2 = 0; //Oxygen Saturation
+  int pr = 0; //Pulse Rate
+  double pi = 0.0; //Perfusion index
+  int si = 0; //Signal Index
+  int rr = 0; //Respiratory rate
+  int af = 0; //Atrial fibrillation
+
   String model = Cmd.BCI;
   int battery = 0;
   String deviceName = '--';
@@ -41,7 +42,7 @@ class Helper extends ChangeNotifier {
     model = Cmd.BCI;
     deviceName = '--';
     deviceId = '--';
-    notify();
+    refresh();
   }
 
   //Bluetooth data analysis
@@ -73,13 +74,13 @@ class Helper extends ChangeNotifier {
   }
 
   //Notification refresh
-  void notify() => notifyListeners();
+  void refresh() => notifyListeners();
 
-  //Start the BM1300 refresh interface
+  //Start the BCI refresh interface
   void startTimer() {
     stopTimer();
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      notify();
+      refresh();
     });
   }
 
@@ -93,7 +94,7 @@ class Helper extends ChangeNotifier {
     deviceName = _setBleName(device.name);
     deviceId = _getMac(device);
     model = _deviceModel(device);
-    notify();
+    refresh();
   }
 
   //Device model
