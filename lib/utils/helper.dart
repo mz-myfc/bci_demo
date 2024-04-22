@@ -46,8 +46,7 @@ class Helper extends ChangeNotifier {
   }
 
   //Bluetooth data analysis
-  void analysis(List<int> array) {
-    bufferArray += array;
+  void analysis(List<int> array) { 
     switch (model) {
       case Cmd.BCI:
         _analysisBci(array);
