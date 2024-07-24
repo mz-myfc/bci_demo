@@ -399,7 +399,7 @@ class Helper extends ChangeNotifier {
 
   //Calculating PR (BM1000A-I)
   int _calculatePr(int one, int two, int three) {
-    int pr = ((one & 0x40) << 7) | (two & 0x7F) | ((three & 0x01) << 8);
+    int pr = ((one & 0x40) << 1) | (two & 0x7F) | ((three & 0x01) << 8);
     return pr >= 250 ? 250 : (pr <= 0 ? 0 : pr);
   }
 
