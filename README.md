@@ -1,6 +1,6 @@
 # bci_demo
 
-A new Flutter project.
+BCI Demo.
 
 ## Getting Started
 

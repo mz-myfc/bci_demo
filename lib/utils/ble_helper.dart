@@ -72,9 +72,10 @@ extension BluetoothExtension on Ble {
         Pop.helper.loadAnimation(msg: 'Connecting...');
         break;
       case DeviceConnectionState.connected:
+        currentDevice = device;
         Helper.h.setDeviceInfo(device);
         Pop.helper.dismiss();
-        _readAndWrite(device);
+        _listen(device);
         break;
       case DeviceConnectionState.disconnecting:
         break;
@@ -120,8 +121,7 @@ extension BluetoothExtension on Ble {
     deviceArray.sort((a, b) => b.rssi - a.rssi); //sort
     _stopTimer();
     if (deviceArray.isNotEmpty) {
-      currentDevice = deviceArray.first.device;
-      _connect(currentDevice!);
+      _connect(deviceArray.first.device);
     } else {
       Pop.helper.toast(msg: 'There is no device available, please search again');
     }
@@ -173,7 +173,7 @@ extension BluetoothExtension on Ble {
     }); 
   }
 
-  void _readAndWrite(DiscoveredDevice device) {
+  void _listen(DiscoveredDevice device) {
     final characteristic = QualifiedCharacteristic(
       serviceId: Cmd.SERVICE_UUID,
       characteristicId: Cmd.CHARACTERISTIC_UUID_SEND,
@@ -181,9 +181,18 @@ extension BluetoothExtension on Ble {
     );
     ble
         .subscribeToCharacteristic(characteristic)
-        .listen((data) => _analysis(data), onError: (_) => _disconnect());
+        .listen((data) => Helper.h.parse(data), onError: (_) => _disconnect());
   }
 
-  //Read and parse data
-  void _analysis(List<int> data) => Helper.h.analysis(data);
+  //Send Hex
+  void write(List<int> hex) async {
+    if (currentDevice != null) {
+      final characteristic = QualifiedCharacteristic(
+        serviceId: Cmd.SERVICE_UUID,
+        characteristicId: Cmd.CHARACTERISTIC_UUID_RECEIVE,
+        deviceId: currentDevice!.id,
+      );
+      await ble.writeCharacteristicWithoutResponse(characteristic, value: hex);
+    }
+  }
 }

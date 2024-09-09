@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'utils/ble_helper.dart';
 import 'utils/helper.dart';
 import 'utils/notice.dart';
+import 'utils/parse/berry_protocol.dart';
 import 'utils/pop/pop.dart';
 
 /*
@@ -18,10 +19,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String _selectedItem = '100Hz';
+
   @override
   void initState() {
     Helper.h.startTimer();
     super.initState();
+  }
+
+  void _onChanged(String? v) {
+    _selectedItem = v!;
+    BerryProtocol.instance.switchFrequency(_selectedItem);
+    setState(() {});
   }
 
   @override
@@ -30,6 +39,18 @@ class _HomePageState extends State<HomePage> {
           title: const Text('BCI Demo'),
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           actions: [
+            DropdownButton<String>(
+              value: _selectedItem,
+              onChanged: _onChanged,
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              items: ['1Hz', '50Hz', '100Hz', '200Hz', 'Stop'].map((v) {
+                return DropdownMenuItem<String>(
+                  value: v,
+                  child: Text(v),
+                );
+              }).toList(),
+            ),
+            const SizedBox(width: 10),
             IconButton(
               icon: const Icon(Icons.bluetooth),
               onPressed: () => Ble.helper.startScan(),
@@ -45,8 +66,9 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   HeadView(title: 'Name', value: helper.deviceName),
                   HeadView(title: 'ID', value: helper.deviceId),
-                  HeadView(title: 'Battery', value: helper.battery.batt),
+                  HeadView(title: 'Battery', value: helper.battery.battery),
                   HeadView(title: 'Model', value: helper.model),
+                  HeadView(title: 'PacketFreq', value: helper.packetFreq),
                   Divider(color: Colors.purple.shade100),
                   Flex(
                     direction: Axis.horizontal,
