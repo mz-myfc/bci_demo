@@ -4,14 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
-import 'cmd.dart';
-import 'parse/bci_bm1000_i.dart';
-import 'parse/bci_eight_bytes.dart';
-import 'parse/bci_five_bytes.dart';
-import 'parse/bci_nine_bytes.dart';
-import 'parse/bci_seven_bytes.dart';
-import 'parse/bci_six_bytes.dart';
-import 'parse/berry_protocol.dart';
+import 'ble/cmd.dart';
+import 'parse/bci_af_protocol_v1.0/bci_af_protocol_v1.0.dart';
+import 'parse/bci_protocol_v1.4/bci_protocol_v1.4.dart';
+import 'parse/bci_protocol_v1.5/bci_protocol_v1.5.dart';
+import 'parse/bci_protocol_v2.0/bci_protocol_v2.0.dart';
+import 'parse/bci_rr_af_protocol_v1.0/bci_rr_af_protocol_v1.0.dart';
+import 'parse/bci_rr_protocol_v1.0/bci_rr_protocol_v1.0.dart';
+import 'parse/berry_protocol_v1.4/berry_protocol_v1.4.dart';
 
 /*
  * @description 
@@ -53,12 +53,12 @@ class Helper extends ChangeNotifier {
     deviceId = '--';
     packetFreq = '--';
 
-    BciFiveBytes.instance.init();
-    BciSixBytes.instance.init();
-    BciSevenBytes.instance.init();
-    BciEightBytes.instance.init();
-    BciNineBytes.instance.init();
-    BciBm1000I.instance.init();
+    BciProtocolFiveBytes.instance.init();
+    BciProtocolSixBytes.instance.init();
+    BciRrProtocol.instance.init();
+    BciAfProtocol.instance.init();
+    BciRrAfProtocol.instance.init();
+    BciProtocolSevenBytes.instance.init();
     BerryProtocol.instance.init();
 
     refresh();
@@ -83,29 +83,29 @@ class Helper extends ChangeNotifier {
   void parse(List<int> array) {
     switch (model) {
       case Cmd.BCI:
-        BciFiveBytes.instance.parse(array);
+        BciProtocolFiveBytes.instance.parse(array);
         break;
       case Cmd.BCI_BATTERY:
-        BciSixBytes.instance.parse(array);
+        BciProtocolSixBytes.instance.parse(array);
         break;
       case Cmd.BCI_RR:
-        BciSevenBytes.instance.parse(array);
+        BciRrProtocol.instance.parse(array);
         break;
       case Cmd.BCI_AF:
-        BciEightBytes.instance.parse(array);
+        BciAfProtocol.instance.parse(array);
         break;
       case Cmd.BCI_RR_AF:
-        BciNineBytes.instance.parse(array);
+        BciRrAfProtocol.instance.parse(array);
         break;
       case Cmd.BCI_BM100A_I:
-        BciBm1000I.instance.parse(array);
+        BciProtocolSevenBytes.instance.parse(array);
         break;
       default:
         if (array.length >= 2) {
           if (array[0] == 0xFF && array[1] == 0xAA) {
             BerryProtocol.instance.parse(array);
           } else {
-            BciFiveBytes.instance.parse(array);
+            BciProtocolFiveBytes.instance.parse(array);
           }
         }
         break;
