@@ -38,9 +38,6 @@ class BciProtocolFiveBytes {
         // Read Data
         Helper.h.readParseData(spo2, pr, pi, si, heart, wave, 0, 0, 0);
 
-
-        print('_buffArray = $_buffArray | heart = $heart');
-
         i += 5;
         validIndex = i;
         continue;
