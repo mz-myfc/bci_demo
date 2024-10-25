@@ -83,12 +83,6 @@ class BciRrAfProtocol {
     }
   }
 
-  //Calculating PR (BM1000A-I)
-  int _cPr(int one, int two, int three) {
-    int pr = ((one & 0x40) << 1) | (two & 0x7F) | ((three & 0x01) << 8);
-    return min(max(0, pr), 250);
-  }
-
   //Calculation of AF (Atrial Fibrillation)
   int _cAf(int sixBits, int sevenBits) {
     int af = ((sixBits & 0x7F) + ((sevenBits & 0x3F) * 128)).toInt();

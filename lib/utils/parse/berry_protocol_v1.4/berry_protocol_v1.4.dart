@@ -98,6 +98,12 @@ class BerryProtocol {
       case 'Stop':
         hex = [0xf6];
         break;
+      case 'BCI':
+        hex = [0xe0];
+        break;
+      case 'BERRY':
+        hex = [0xe1];
+        break;
     }
     Ble.helper.write(hex);
   }

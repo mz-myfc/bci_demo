@@ -101,12 +101,11 @@ class Helper extends ChangeNotifier {
         BciProtocolSevenBytes.instance.parse(array);
         break;
       default:
-        if (array.length >= 2) {
-          if (array[0] == 0xFF && array[1] == 0xAA) {
-            BerryProtocol.instance.parse(array);
-          } else {
-            BciProtocolFiveBytes.instance.parse(array);
-          }
+        var berry = isBerry(array);
+        if (berry) {
+          BerryProtocol.instance.parse(array);
+        } else {
+          BciProtocolFiveBytes.instance.parse(array);
         }
         break;
     }
@@ -185,6 +184,17 @@ class Helper extends ChangeNotifier {
       return model.toParts;
     }
     return '';
+  }
+
+  //Berry Protocol
+  bool isBerry(List<int> data) {
+    if (data.isEmpty || data.length < 2) return false;
+    for (int i = 0; i < data.length - 1; i++) {
+      if (data[i] == 0xFF && data[i + 1] == 0xAA) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'utils/ble/ble_helper.dart';
+import 'utils/ble/permission.dart';
 import 'utils/helper.dart';
 import 'utils/notice.dart';
 import 'utils/parse/berry_protocol_v1.4/berry_protocol_v1.4.dart';
@@ -23,7 +25,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    WakelockPlus.enable();
     Helper.h.startTimer();
+    Future.delayed(
+        const Duration(seconds: 1), () async => await Ble.helper.bleState());
     super.initState();
   }
 
@@ -43,7 +48,7 @@ class _HomePageState extends State<HomePage> {
               value: _selectedItem,
               onChanged: _onChanged,
               borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-              items: ['1Hz', '50Hz', '100Hz', '200Hz', 'Stop'].map((v) {
+              items: ['1Hz', '50Hz', '100Hz', '200Hz', 'Stop', 'BCI', 'BERRY'].map((v) {
                 return DropdownMenuItem<String>(
                   value: v,
                   child: Text(v),
@@ -53,7 +58,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(width: 10),
             IconButton(
               icon: const Icon(Icons.bluetooth),
-              onPressed: () => Ble.helper.startScan(),
+              onPressed: () => PermissionHelper.helper.scanBluetooth(),
             ),
           ],
         ),
@@ -112,6 +117,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    WakelockPlus.disable();
     Helper.h.stopTimer();
     super.dispose();
   }
