@@ -37,6 +37,8 @@ class Helper extends ChangeNotifier {
   String deviceName = '--';
   String deviceId = '--';
   String packetFreq = '--'; //Packets Frequency
+  String sv = '--'; //Software Version
+  String hv = '--'; //Hardware Version
 
   Timer? timer;
 
@@ -52,6 +54,8 @@ class Helper extends ChangeNotifier {
     deviceName = '--';
     deviceId = '--';
     packetFreq = '--';
+    sv = '--';
+    hv = '--';
 
     BciProtocolFiveBytes.instance.init();
     BciProtocolSixBytes.instance.init();
@@ -81,6 +85,7 @@ class Helper extends ChangeNotifier {
 
   //Parse Data
   void parse(List<int> array) {
+    _version(array);
     switch (model) {
       case Cmd.BCI:
         BciProtocolFiveBytes.instance.parse(array);
@@ -144,7 +149,8 @@ class Helper extends ChangeNotifier {
   }
 
   void setDeviceInfo(DiscoveredDevice device) {
-    deviceName = _setBleName(device.name);
+    //Handles characters that are not recognized by Bluetooth names
+    deviceName = device.name.toStr;
     deviceId = _getMac(device);
     model = _deviceModel(device);
     refresh();
@@ -160,17 +166,7 @@ class Helper extends ChangeNotifier {
           .toList();
       return mac.toParts;
     }
-    return device.id.startsWith('00:A0:50') ? device.id : '--';
-  }
-
-  //Handles characters that are not recognized by Bluetooth names
-  String _setBleName(String name) {
-    if (name.codeUnits.contains(0)) {
-      return String.fromCharCodes(
-        Uint8List.fromList(name.codeUnits.sublist(0, name.codeUnits.indexOf(0))),
-      );
-    }
-    return name;
+    return device.id;
   }
 
   //Device model
@@ -183,7 +179,7 @@ class Helper extends ChangeNotifier {
           .toList();
       return model.toParts;
     }
-    return '';
+    return '--';
   }
 
   //Berry Protocol
@@ -195,6 +191,19 @@ class Helper extends ChangeNotifier {
       }
     }
     return false;
+  }
+
+  //ASCII
+  void _version(List<int> array) {
+    if (array.isEmpty) return;
+    var arr = array.sublist(2, array.length - 1);
+    var ascii = String.fromCharCodes(arr).toStr;
+    if (ascii.contains('SV')) {
+      sv = ascii;
+    }
+    if (ascii.contains('HV')) {
+      hv = ascii;
+    }
   }
 }
 
@@ -211,4 +220,12 @@ extension Format on num {
 extension MyListFormat on List {
   String get toParts =>
       isNotEmpty ? map((e) => e.toString().padLeft(2, '0')).join(':') : '';
+}
+
+extension MyString on String {
+  String get toStr => codeUnits.contains(0)
+      ? String.fromCharCodes(
+          Uint8List.fromList(codeUnits.sublist(0, codeUnits.indexOf(0))),
+        )
+      : this;
 }

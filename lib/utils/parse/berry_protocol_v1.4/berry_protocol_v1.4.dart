@@ -1,4 +1,3 @@
-import '../../ble/ble_helper.dart';
 import '../../helper.dart';
 
 /*
@@ -77,34 +76,5 @@ class BerryProtocol {
     } else {
       return 0;
     }
-  }
-
-  //Berry protocol switches the packet frequency
-  void switchFrequency(String v) {
-    List<int> hex = [];
-    switch (v) {
-      case '1Hz':
-        hex = [0xf3];
-        break;
-      case '50Hz':
-        hex = [0xf0];
-        break;
-      case '100Hz':
-        hex = [0xf1];
-        break;
-      case '200Hz':
-        hex = [0xf2];
-        break;
-      case 'Stop':
-        hex = [0xf6];
-        break;
-      case 'BCI':
-        hex = [0xe0];
-        break;
-      case 'BERRY':
-        hex = [0xe1];
-        break;
-    }
-    Ble.helper.write(hex);
   }
 }
