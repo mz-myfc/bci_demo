@@ -1,16 +1,28 @@
 PODS:
+  - app_settings (5.1.1):
+    - Flutter
   - Flutter (1.0.0)
+  - package_info_plus (0.4.5):
+    - Flutter
+  - permission_handler_apple (9.3.0):
+    - Flutter
   - Protobuf (3.24.3)
   - reactive_ble_mobile (0.0.1):
     - Flutter
     - Protobuf (~> 3.5)
     - SwiftProtobuf (~> 1.0)
   - SwiftProtobuf (1.23.0)
+  - wakelock_plus (0.0.1):
+    - Flutter
   - WechatOpenSDK-XCFramework (2.0.2)
 
 DEPENDENCIES:
+  - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - Flutter (from `Flutter`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - reactive_ble_mobile (from `.symlinks/plugins/reactive_ble_mobile/ios`)
+  - wakelock_plus (from `.symlinks/plugins/wakelock_plus/ios`)
   - WechatOpenSDK-XCFramework
 
 SPEC REPOS:
@@ -20,18 +32,30 @@ SPEC REPOS:
     - WechatOpenSDK-XCFramework
 
 EXTERNAL SOURCES:
+  app_settings:
+    :path: ".symlinks/plugins/app_settings/ios"
   Flutter:
     :path: Flutter
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   reactive_ble_mobile:
     :path: ".symlinks/plugins/reactive_ble_mobile/ios"
+  wakelock_plus:
+    :path: ".symlinks/plugins/wakelock_plus/ios"
 
 SPEC CHECKSUMS:
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  app_settings: 017320c6a680cdc94c799949d95b84cb69389ebc
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
+  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   Protobuf: 970f7ee93a3a08e3cf64859b8efd95ee32b4f87f
   reactive_ble_mobile: 9ce6723d37ccf701dbffd202d487f23f5de03b4c
   SwiftProtobuf: b70d65f419fbfe61a2d58003456ca5da58e337d6
+  wakelock_plus: 78ec7c5b202cab7761af8e2b2b3d0671be6c4ae1
   WechatOpenSDK-XCFramework: acdeeda129efbef9532bca8a10c24e1b4b8c7d69
 
 PODFILE CHECKSUM: 18fb96e0e7bd92be8d7423adf43fd8e317ad0531
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.15.2
