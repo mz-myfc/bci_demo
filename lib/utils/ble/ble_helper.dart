@@ -73,6 +73,7 @@ extension BluetoothExtension on Ble {
         break;
       case DeviceConnectionState.connected:
         currentDevice = device;
+        ble.requestMtu(deviceId: device.id, mtu: 128);
         Helper.h.setDeviceInfo(device);
         Pop.helper.dismiss();
         _listen(device);
